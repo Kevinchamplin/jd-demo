@@ -1,0 +1,175 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Xebia Authority Hub - Global Styles */
+
+@layer base {
+  :root {
+    --xebia-purple: #6B21A8;
+    --xebia-purple-light: #9333EA;
+    --xebia-purple-dark: #581C87;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white text-xebia-gray-900 antialiased;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+
+  /* Focus styles for accessibility */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-xebia-purple-600;
+  }
+
+  /* Selection color */
+  ::selection {
+    @apply bg-xebia-purple-200 text-xebia-purple-900;
+  }
+}
+
+@layer components {
+  /* Xebia branded container */
+  .xebia-container {
+    @apply mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
+  }
+
+  /* Gradient backgrounds */
+  .xebia-gradient-bg {
+    @apply bg-gradient-to-br from-xebia-purple-800 via-xebia-purple-700 to-xebia-purple-900;
+  }
+
+  .xebia-gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-xebia-purple-600 to-xebia-purple-800;
+  }
+
+  /* Card styles */
+  .xebia-card {
+    @apply bg-white rounded-xl shadow-lg border border-xebia-gray-100 overflow-hidden transition-all duration-300;
+  }
+
+  .xebia-card:hover {
+    @apply shadow-xebia-xl -translate-y-1;
+  }
+
+  /* Button styles */
+  .xebia-btn {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+
+  .xebia-btn-primary {
+    @apply xebia-btn bg-xebia-purple-800 text-white hover:bg-xebia-purple-900 focus:ring-xebia-purple-500;
+  }
+
+  .xebia-btn-secondary {
+    @apply xebia-btn bg-white text-xebia-purple-800 border border-xebia-purple-300 hover:bg-xebia-purple-50 focus:ring-xebia-purple-500;
+  }
+
+  /* Badge styles */
+  .xebia-badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .xebia-badge-purple {
+    @apply xebia-badge bg-xebia-purple-100 text-xebia-purple-800;
+  }
+
+  .xebia-badge-ai {
+    @apply xebia-badge bg-gradient-to-r from-xebia-purple-600 to-xebia-purple-800 text-white;
+  }
+
+  /* Prose styling for content */
+  .xebia-prose {
+    @apply text-xebia-gray-700 leading-relaxed;
+  }
+
+  .xebia-prose h1 {
+    @apply text-4xl font-bold text-xebia-gray-900 mb-6;
+  }
+
+  .xebia-prose h2 {
+    @apply text-2xl font-semibold text-xebia-gray-900 mt-8 mb-4;
+  }
+
+  .xebia-prose h3 {
+    @apply text-xl font-semibold text-xebia-gray-900 mt-6 mb-3;
+  }
+
+  .xebia-prose p {
+    @apply mb-4;
+  }
+
+  .xebia-prose a {
+    @apply text-xebia-purple-700 hover:text-xebia-purple-900 underline underline-offset-2;
+  }
+
+  .xebia-prose code {
+    @apply bg-xebia-gray-100 px-1.5 py-0.5 rounded text-sm font-mono;
+  }
+
+  .xebia-prose pre {
+    @apply bg-xebia-gray-900 text-xebia-gray-100 p-4 rounded-lg overflow-x-auto my-4;
+  }
+
+  .xebia-prose pre code {
+    @apply bg-transparent p-0;
+  }
+}
+
+@layer utilities {
+  /* Responsive typography */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Animation utilities */
+  .animate-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.5s ease-out forwards;
+  }
+
+  /* Glassmorphism */
+  .glass {
+    @apply bg-white/80 backdrop-blur-lg;
+  }
+
+  .glass-dark {
+    @apply bg-xebia-gray-900/80 backdrop-blur-lg;
+  }
+
+  /* Hide scrollbar but allow scrolling */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Code syntax highlighting base */
+.hljs {
+  @apply bg-xebia-gray-900 text-xebia-gray-100;
+}
+
+/* Loading skeleton */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton {
+  @apply bg-gradient-to-r from-xebia-gray-200 via-xebia-gray-100 to-xebia-gray-200 bg-[length:200%_100%];
+  animation: shimmer 1.5s infinite;
+}

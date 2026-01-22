@@ -1,0 +1,49 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "xebia/ai-summary-generator",
+    "version": "1.0.0",
+    "title": "AI Summary Generator",
+    "category": "widgets",
+    "icon": "lightbulb",
+    "description": "Generate AI-powered executive summaries using OpenAI GPT-4o. Demonstrates Xebia's commitment to AI-native development.",
+    "keywords": ["ai", "summary", "openai", "gpt", "executive", "xebia"],
+    "textdomain": "xebia-authority-engine",
+    "supports": {
+        "html": false,
+        "align": ["wide", "full"],
+        "color": {
+            "background": true,
+            "text": true
+        },
+        "spacing": {
+            "margin": true,
+            "padding": true
+        },
+        "interactivity": true
+    },
+    "attributes": {
+        "summary": {
+            "type": "string",
+            "default": ""
+        },
+        "metadata": {
+            "type": "object",
+            "default": {}
+        },
+        "showTraceability": {
+            "type": "boolean",
+            "default": false
+        },
+        "lastGenerated": {
+            "type": "string",
+            "default": ""
+        }
+    },
+    "usesContext": ["postId", "postType"],
+    "editorScript": "file:./build/index.js",
+    "editorStyle": "file:./build/index.css",
+    "style": "file:./build/style-index.css",
+    "viewScript": "file:./build/view.js",
+    "render": "file:./render.php"
+}

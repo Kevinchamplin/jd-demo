@@ -1,0 +1,108 @@
+# ===============================================
+# Xebia Authority Hub - Git Ignore
+# ===============================================
+
+# -----------------------------------------------
+# Environment & Secrets (CRITICAL - never commit)
+# -----------------------------------------------
+.env
+.env.local
+.env.*.local
+*.env
+!.env.example
+
+# -----------------------------------------------
+# Dependencies
+# -----------------------------------------------
+node_modules/
+vendor/
+
+# -----------------------------------------------
+# Build outputs
+# -----------------------------------------------
+.next/
+out/
+build/
+dist/
+
+# -----------------------------------------------
+# WordPress Core & Composer-managed plugins
+# -----------------------------------------------
+backend/web/wp/
+backend/web/app/uploads/
+backend/web/app/upgrade/
+backend/web/app/cache/
+
+# Composer-managed plugins (installed via composer)
+backend/web/app/plugins/advanced-custom-fields/
+backend/web/app/plugins/wp-graphql/
+backend/web/app/plugins/wpgraphql-acf/
+backend/web/app/mu-plugins/bedrock-autoloader/
+backend/web/app/mu-plugins/bedrock-disallow-indexing/
+backend/web/app/mu-plugins/register-theme-directory/
+backend/web/app/mu-plugins/disallow-indexing.php
+
+# Keep only our custom plugin, but ignore its build artifacts
+backend/web/app/plugins/xebia-authority-engine/blocks/*/build/
+backend/web/app/plugins/xebia-authority-engine/blocks/*/node_modules/
+
+# -----------------------------------------------
+# IDE & Editor
+# -----------------------------------------------
+.idea/
+.vscode/
+*.sublime-*
+*.swp
+*.swo
+*~
+
+# -----------------------------------------------
+# OS Files
+# -----------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+
+# -----------------------------------------------
+# Testing & Coverage
+# -----------------------------------------------
+coverage/
+.phpunit.result.cache
+.pest/
+*.lcov
+
+# -----------------------------------------------
+# Logs
+# -----------------------------------------------
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# -----------------------------------------------
+# Misc
+# -----------------------------------------------
+*.phar
+composer.lock
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Installation scripts (temporary)
+backend/install-wp.php
+backend/setup-site.php
+backend/create-content.php
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+
+# PHP CS Fixer
+.php-cs-fixer.cache

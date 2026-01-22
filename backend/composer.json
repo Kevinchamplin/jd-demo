@@ -1,0 +1,104 @@
+{
+    "name": "xebia/authority-hub",
+    "type": "project",
+    "license": "MIT",
+    "description": "Xebia Authority Hub - A showcase of modern WordPress architecture",
+    "authors": [
+        {
+            "name": "Kevin Champlin",
+            "email": "kevin@example.com"
+        }
+    ],
+    "keywords": [
+        "bedrock",
+        "composer",
+        "roots",
+        "wordpress",
+        "wp",
+        "wp-config",
+        "xebia"
+    ],
+    "support": {
+        "issues": "https://github.com/roots/bedrock/issues",
+        "forum": "https://discourse.roots.io/category/bedrock"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://wpackagist.org",
+            "only": [
+                "wpackagist-plugin/*",
+                "wpackagist-theme/*"
+            ]
+        }
+    ],
+    "require": {
+        "php": ">=8.2",
+        "composer/installers": "^2.2",
+        "vlucas/phpdotenv": "^5.6",
+        "oscarotero/env": "^2.1",
+        "roots/bedrock-autoloader": "^1.0",
+        "roots/bedrock-disallow-indexing": "^2.0",
+        "roots/wordpress": "^6.7",
+        "roots/wp-config": "^1.0",
+        "roots/wp-password-bcrypt": "^1.1",
+        "wpackagist-plugin/wp-graphql": "^1.28",
+        "wpackagist-plugin/advanced-custom-fields": "^6.3",
+        "wpackagist-plugin/wpgraphql-acf": "^2.4",
+        "guzzlehttp/guzzle": "^7.9"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.10",
+        "wp-coding-standards/wpcs": "^3.1",
+        "phpcompatibility/php-compatibility": "^9.3",
+        "pestphp/pest": "^2.35",
+        "roave/security-advisories": "dev-latest"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "allow-plugins": {
+            "composer/installers": true,
+            "roots/wordpress-core-installer": true,
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        },
+        "sort-packages": true,
+        "platform": {
+            "php": "8.2"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "installer-paths": {
+            "web/app/mu-plugins/{$name}/": [
+                "type:wordpress-muplugin"
+            ],
+            "web/app/plugins/{$name}/": [
+                "type:wordpress-plugin"
+            ],
+            "web/app/themes/{$name}/": [
+                "type:wordpress-theme"
+            ]
+        },
+        "wordpress-install-dir": "web/wp"
+    },
+    "scripts": {
+        "test": [
+            "@test:phpcs",
+            "@test:pest"
+        ],
+        "test:phpcs": "phpcs",
+        "test:pest": "pest",
+        "post-root-package-install": [
+            "php -r \"copy('.env.example', '.env');\""
+        ]
+    },
+    "autoload": {
+        "psr-4": {
+            "Xebia\\AuthorityEngine\\": "web/app/plugins/xebia-authority-engine/src/"
+        }
+    }
+}
