@@ -12,7 +12,6 @@ import {
   ChevronUp,
   CheckCircle2,
   XCircle,
-  AlertCircle,
   Loader2,
 } from 'lucide-react';
 
@@ -162,7 +161,7 @@ function TabButton({
 }
 
 function TestSuitePanel() {
-  const backendTests = [
+  const backendTests: Array<{ name: string; status: 'pass' | 'fail' | 'pending'; time: string }> = [
     { name: 'ContainerTest::testSingletonBinding', status: 'pass', time: '0.012s' },
     { name: 'ContainerTest::testCircularDependency', status: 'pass', time: '0.008s' },
     { name: 'InsightPostTypeTest::testRegistration', status: 'pass', time: '0.045s' },
@@ -172,7 +171,7 @@ function TestSuitePanel() {
     { name: 'RestApiServiceTest::testNonceVerification', status: 'pass', time: '0.023s' },
   ];
 
-  const frontendTests = [
+  const frontendTests: Array<{ name: string; status: 'pass' | 'fail' | 'pending'; time: string }> = [
     { name: 'InsightsList renders correctly', status: 'pass', time: '0.034s' },
     { name: 'DevConsole opens on click', status: 'pass', time: '0.028s' },
     { name: 'GraphQL client handles errors', status: 'pass', time: '0.019s' },
