@@ -106,3 +106,15 @@ backend/create-content.php
 
 # PHP CS Fixer
 .php-cs-fixer.cache
+
+# Personal files (not for public repo)
+INTERVIEW_PREP.md
+DEPLOYMENT_CHECKLIST.md
+QUICK_START.md
+SAME_SERVER_DEPLOYMENT.md
+
+# Plugin/Theme zips (for manual upload)
+*.zip
+
+# MD Files
+*.md~

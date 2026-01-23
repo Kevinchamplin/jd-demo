@@ -4,24 +4,19 @@ declare(strict_types=1);
 
 namespace Xebia\AuthorityEngine\OpenAI;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\RequestOptions;
 use RuntimeException;
 use Xebia\AuthorityEngine\Services\ConfigService;
 
 /**
  * OpenAI API Client
  *
- * Handles HTTP communication with the OpenAI API using Guzzle.
- * Implements proper error handling and response parsing.
+ * Handles HTTP communication with the OpenAI API using WordPress HTTP API.
+ * Uses native WordPress functions for maximum compatibility.
  *
  * @package Xebia\AuthorityEngine\OpenAI
  */
 final class OpenAIClient
 {
-    private Client $httpClient;
-
     private ConfigService $config;
 
     /**
@@ -46,14 +41,6 @@ final class OpenAIClient
     public function __construct(ConfigService $config)
     {
         $this->config = $config;
-        $this->httpClient = new Client([
-            'base_uri' => 'https://api.openai.com/v1/',
-            'timeout' => 30.0,
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Authorization' => 'Bearer ' . $this->config->getOpenAIApiKey(),
-            ],
-        ]);
     }
 
     /**
@@ -76,37 +63,36 @@ final class OpenAIClient
         $this->lastRequestPayload = $payload;
         $startTime = microtime(true);
 
-        try {
-            $response = $this->httpClient->post('chat/completions', [
-                RequestOptions::JSON => $payload,
-            ]);
+        $response = wp_remote_post('https://api.openai.com/v1/chat/completions', [
+            'timeout' => 30,
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer ' . $this->config->getOpenAIApiKey(),
+            ],
+            'body' => wp_json_encode($payload),
+        ]);
 
-            $this->lastRequestDuration = (microtime(true) - $startTime) * 1000;
+        $this->lastRequestDuration = (microtime(true) - $startTime) * 1000;
 
-            $body = $response->getBody()->getContents();
-            $data = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
-
-            $this->lastResponseData = $data;
-
-            if (!isset($data['choices'][0]['message']['content'])) {
-                throw new RuntimeException('Invalid response structure from OpenAI API');
-            }
-
-            return [
-                'content' => $data['choices'][0]['message']['content'],
-                'usage' => $data['usage'] ?? [],
-                'model' => $data['model'] ?? $payload['model'],
-                'finish_reason' => $data['choices'][0]['finish_reason'] ?? 'unknown',
-            ];
-        } catch (GuzzleException $e) {
-            $this->lastRequestDuration = (microtime(true) - $startTime) * 1000;
-            $this->lastResponseData = ['error' => $e->getMessage()];
-
+        if (is_wp_error($response)) {
+            $this->lastResponseData = ['error' => $response->get_error_message()];
             throw new RuntimeException(
-                sprintf('OpenAI API request failed: %s', $e->getMessage()),
-                (int) $e->getCode(),
-                $e
+                sprintf('OpenAI API request failed: %s', $response->get_error_message())
             );
+        }
+
+        $body = wp_remote_retrieve_body($response);
+        $statusCode = wp_remote_retrieve_response_code($response);
+
+        if ($statusCode !== 200) {
+            $this->lastResponseData = ['error' => $body, 'status' => $statusCode];
+            throw new RuntimeException(
+                sprintf('OpenAI API returned error %d: %s', $statusCode, $body)
+            );
+        }
+
+        try {
+            $data = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
         } catch (\JsonException $e) {
             throw new RuntimeException(
                 sprintf('Failed to parse OpenAI response: %s', $e->getMessage()),
@@ -114,6 +100,19 @@ final class OpenAIClient
                 $e
             );
         }
+
+        $this->lastResponseData = $data;
+
+        if (!isset($data['choices'][0]['message']['content'])) {
+            throw new RuntimeException('Invalid response structure from OpenAI API');
+        }
+
+        return [
+            'content' => $data['choices'][0]['message']['content'],
+            'usage' => $data['usage'] ?? [],
+            'model' => $data['model'] ?? $payload['model'],
+            'finish_reason' => $data['choices'][0]['finish_reason'] ?? 'unknown',
+        ];
     }
 
     /**
